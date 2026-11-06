@@ -47,10 +47,11 @@ a{color:inherit}
 .services-head{padding:clamp(60px,10vh,110px) clamp(18px,6vw,96px) 40px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
 .services-head h2,.ba h2,.team h2{font:500 clamp(2.6rem,6vw,5.4rem)/1 var(--serif)}
 .services-head p{max-width:44ch;color:#5d4c47}
-.track-wrap{overflow-x:auto;padding-bottom:clamp(50px,9vh,90px)}
-.motion .track-wrap{overflow:visible}
+.track-wrap{overflow-x:auto;overflow-y:hidden;padding-bottom:clamp(50px,9vh,90px);scroll-snap-type:x mandatory;scroll-padding:0 clamp(18px,6vw,96px);overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+.h-pin .track-wrap{overflow:visible;scroll-snap-type:none}
+@media (hover:none){.track-wrap{scrollbar-width:none}.track-wrap::-webkit-scrollbar{display:none}}
 .track{display:flex;gap:clamp(16px,2vw,28px);padding:0 clamp(18px,6vw,96px);width:max-content}
-.card{width:clamp(270px,34vw,480px);flex:none}
+.card{width:clamp(260px,34vw,480px);flex:none;scroll-snap-align:start}
 .card .ph{aspect-ratio:4/5;border-radius:2px}
 .card h3{font:600 clamp(1.7rem,2.6vw,2.3rem)/1.1 var(--serif);margin-top:18px}
 .card p{color:#5d4c47;margin-top:6px;max-width:36ch}
@@ -59,12 +60,13 @@ a{color:inherit}
 .ba{padding:clamp(90px,14vh,160px) clamp(18px,6vw,96px);display:flex;flex-direction:column;align-items:center;text-align:center}
 .ba h2{max-width:14ch}
 .ba > p{color:var(--smoke);margin:16px auto 40px;max-width:46ch}
-.compare{position:relative;aspect-ratio:4/5;max-height:82vh;width:100%;max-width:560px;margin:0 auto;overflow:hidden;--pos:50%;touch-action:pan-y}
+.compare{position:relative;aspect-ratio:4/5;max-height:82vh;width:100%;max-width:560px;margin:0 auto;overflow:hidden;--pos:50%;touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .compare .layer{position:absolute;inset:0}
 .compare .after{clip-path:inset(0 0 0 var(--pos))}
 .compare .line{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;background:var(--bone);transform:translateX(-1px);pointer-events:none}
 .compare .line::after{content:"";position:absolute;top:50%;left:50%;width:46px;height:46px;border-radius:50%;border:2px solid var(--bone);background:rgba(26,14,16,.5);transform:translate(-50%,-50%)}
-.compare input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.compare input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;pointer-events:none}
+.compare:has(input:focus-visible){outline:2px solid var(--copper);outline-offset:4px}
 .compare .tag{position:absolute;bottom:16px;font-size:.9rem;background:rgba(26,14,16,.65);padding:4px 10px;border-radius:2px}
 .compare .tag.l{left:16px}.compare .tag.r{right:16px}
 
@@ -272,11 +274,21 @@ function startLang() {
 
 document.querySelectorAll('.langs button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
+// Before/after: drag anywhere on the image (mouse or finger); the hidden range input keeps keyboard support.
 const compare = document.querySelector('.compare');
-compare.querySelector('input').addEventListener('input', e => compare.style.setProperty('--pos', e.target.value + '%'));
+const range = compare.querySelector('input');
+const setPos = v => { v = Math.max(0, Math.min(100, v)); range.value = v; compare.style.setProperty('--pos', v + '%'); };
+const posFromEvent = e => { const r = compare.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; };
+let dragging = false;
+range.addEventListener('input', () => setPos(+range.value));
+compare.addEventListener('pointerdown', e => { dragging = true; compare.setPointerCapture(e.pointerId); if (e.pointerType === 'mouse') setPos(posFromEvent(e)); });
+compare.addEventListener('pointermove', e => { if (dragging) setPos(posFromEvent(e)); });
+compare.addEventListener('pointerup', e => { if (dragging) setPos(posFromEvent(e)); dragging = false; });
+compare.addEventListener('pointercancel', () => { dragging = false; });
 
 if (motion) {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
   document.documentElement.classList.add('motion');
 
   if (window.Lenis) {
@@ -295,11 +307,18 @@ if (motion) {
     .to('.hero-title', { scale: 0.32, ease: 'none' }, 0)
     .to('.hero-sub', { opacity: 0, y: -30, ease: 'none' }, 0);
 
-  const track = document.querySelector('.track');
-  const dist = () => track.scrollWidth - window.innerWidth;
-  gsap.to(track, {
-    x: () => -dist(), ease: 'none',
-    scrollTrigger: { trigger: '.services', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true }
+  // Scroll-driven horizontal cards only with a mouse on wide screens.
+  // Phones and tablets get a native finger swipe with snapping instead.
+  gsap.matchMedia().add('(min-width: 761px) and (hover: hover) and (pointer: fine)', () => {
+    document.documentElement.classList.add('h-pin');
+    const track = document.querySelector('.track');
+    const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+    gsap.to(track, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: { trigger: '.services', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, refreshPriority: 1 }
+    });
+    ScrollTrigger.sort();
+    return () => document.documentElement.classList.remove('h-pin');
   });
 
   document.querySelectorAll('.reveal').forEach(el => {
