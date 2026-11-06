@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grań — studio fryzjerskie i kosmetologiczne</title>
+<meta name="description" content="Strzyżenie, koloryzacja i kosmetologia w Warszawie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/hero.webp">
+<style>
+:root{
+  --ink:#1A0E10; --wine:#3A1219; --oxblood:#6E1423; --copper:#C08A5B; --bone:#EDE3D6; --smoke:#9A8C84;
+  --serif:"Cormorant","Times New Roman",Georgia,serif;
+  --sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--ink);color:var(--bone);font:400 1.0625rem/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--copper);outline-offset:4px}
+
+.ph{background-color:var(--wine);background-image:var(--img),var(--fallback,radial-gradient(120% 90% at 30% 20%,#8a3a2c 0%,#4a1520 45%,#1a0e10 100%));background-size:cover;background-position:center}
+
+.top{position:fixed;inset:0 0 auto;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 18px) clamp(18px,4vw,48px) 18px;mix-blend-mode:difference;color:#fff}
+.logo{font:600 1.6rem/1 var(--serif);text-decoration:none}
+.top-right{display:flex;align-items:center;gap:clamp(14px,2.5vw,28px)}
+.langs{display:flex;gap:2px}
+.langs button{background:none;border:0;color:inherit;font:500 .9rem var(--sans);padding:6px 7px;cursor:pointer;opacity:.5}
+.langs button[aria-pressed="true"]{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.top a.book{font:500 .95rem var(--sans);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;white-space:nowrap}
+
+.hero{position:relative;height:100vh;height:100svh;overflow:hidden}
+.hero-media{position:absolute;inset:0;background-position:62% center;clip-path:inset(0% 0% 0% 0% round 0px)}
+.hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,14,16,.15) 40%,rgba(26,14,16,.8))}
+.hero-title{position:absolute;left:0;right:0;bottom:6vh;text-align:center;font:500 clamp(6rem,27vw,26rem)/.8 var(--serif);letter-spacing:-.04em;transform-origin:50% 100%;pointer-events:none}
+.hero-sub{position:absolute;left:0;right:0;margin:0 auto;width:min(90%,34ch);text-align:center;bottom:calc(6vh + clamp(6rem,27vw,26rem)*.8 + 24px)}
+
+.manifesto{padding:clamp(100px,18vh,200px) clamp(18px,6vw,96px)}
+.manifesto p{font:500 clamp(2rem,5.2vw,4.6rem)/1.08 var(--serif);max-width:20ch;margin:0 auto;text-align:center}
+.manifesto .w{display:inline-block;margin-right:.22em}
+
+.services{position:relative;background:var(--bone);color:var(--ink);overflow:hidden}
+.services-head{padding:clamp(60px,10vh,110px) clamp(18px,6vw,96px) 40px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.services-head h2,.ba h2,.team h2{font:500 clamp(2.6rem,6vw,5.4rem)/1 var(--serif)}
+.services-head p{max-width:44ch;color:#5d4c47}
+.track-wrap{overflow-x:auto;padding-bottom:clamp(50px,9vh,90px)}
+.motion .track-wrap{overflow:visible}
+.track{display:flex;gap:clamp(16px,2vw,28px);padding:0 clamp(18px,6vw,96px);width:max-content}
+.card{width:clamp(270px,34vw,480px);flex:none}
+.card .ph{aspect-ratio:4/5;border-radius:2px}
+.card h3{font:600 clamp(1.7rem,2.6vw,2.3rem)/1.1 var(--serif);margin-top:18px}
+.card p{color:#5d4c47;margin-top:6px;max-width:36ch}
+.card .price{display:block;margin-top:10px;font-weight:700;color:var(--oxblood)}
+
+.ba{padding:clamp(90px,14vh,160px) clamp(18px,6vw,96px);display:flex;flex-direction:column;align-items:center;text-align:center}
+.ba h2{max-width:14ch}
+.ba > p{color:var(--smoke);margin:16px auto 40px;max-width:46ch}
+.compare{position:relative;aspect-ratio:4/5;max-height:82vh;width:100%;max-width:560px;margin:0 auto;overflow:hidden;--pos:50%;touch-action:pan-y}
+.compare .layer{position:absolute;inset:0}
+.compare .after{clip-path:inset(0 0 0 var(--pos))}
+.compare .line{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;background:var(--bone);transform:translateX(-1px);pointer-events:none}
+.compare .line::after{content:"";position:absolute;top:50%;left:50%;width:46px;height:46px;border-radius:50%;border:2px solid var(--bone);background:rgba(26,14,16,.5);transform:translate(-50%,-50%)}
+.compare input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.compare .tag{position:absolute;bottom:16px;font-size:.9rem;background:rgba(26,14,16,.65);padding:4px 10px;border-radius:2px}
+.compare .tag.l{left:16px}.compare .tag.r{right:16px}
+
+.team{padding:0 clamp(18px,6vw,96px) clamp(90px,14vh,160px)}
+.team h2{margin-bottom:56px;text-align:center}
+.masters{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
+.master:nth-child(2){margin-top:12vh}
+.master .ph{aspect-ratio:3/4}
+.master{text-align:center}
+.master h3{font:600 1.9rem/1.1 var(--serif);margin-top:16px}
+.master p{color:var(--smoke)}
+
+.cta{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 20px;background:var(--oxblood);overflow:hidden}
+.cta h2{font:500 clamp(4rem,15vw,14rem)/.9 var(--serif);letter-spacing:-.03em}
+.cta p{margin:24px 0 40px;max-width:40ch;color:#e8cfc4}
+.btn{display:inline-block;background:var(--bone);color:var(--ink);text-decoration:none;font:700 1.05rem var(--sans);padding:20px 40px;border-radius:999px;transition:transform .25s,background .25s}
+.btn:hover{background:#fff;transform:scale(1.04)}
+footer{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:28px clamp(18px,6vw,96px);color:var(--smoke);font-size:.95rem}
+
+@media (max-width:760px){
+  .masters{grid-template-columns:1fr}
+  .master:nth-child(2){margin-top:0}
+  .hero-sub{bottom:calc(6vh + clamp(6rem,27vw,26rem)*.8 + 16px)}
+  .top a.book{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="#">Grań</a>
+  <div class="top-right">
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="pl">PL</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ru">RU</button>
+    </div>
+    <a class="book" href="your-studio.html" data-i18n="nav"></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-media ph" style="--img:url(img/hero.webp)"></div>
+    <p class="hero-sub" data-i18n="heroSub"></p>
+    <h1 class="hero-title">Grań</h1>
+  </section>
+
+  <section class="manifesto"><p id="manifesto"></p></section>
+
+  <section class="services">
+    <div class="services-head">
+      <h2 data-i18n="servTitle"></h2>
+      <p data-i18n="servText"></p>
+    </div>
+    <div class="track-wrap">
+      <div class="track">
+        <article class="card"><div class="ph" style="--img:url(img/s1.webp)"></div>
+          <h3 data-i18n="s1t"></h3><p data-i18n="s1d"></p><span class="price" data-i18n="s1p"></span></article>
+        <article class="card"><div class="ph" style="--img:url(img/s2.webp);--fallback:radial-gradient(120% 90% at 70% 30%,#c08a5b,#5a2a1f 55%,#1a0e10)"></div>
+          <h3 data-i18n="s2t"></h3><p data-i18n="s2d"></p><span class="price" data-i18n="s2p"></span></article>
+        <article class="card"><div class="ph" style="--img:url(img/s3.webp);--fallback:radial-gradient(120% 90% at 40% 60%,#d9b8a4,#7a3b3b 55%,#2a1014)"></div>
+          <h3 data-i18n="s3t"></h3><p data-i18n="s3d"></p><span class="price" data-i18n="s3p"></span></article>
+        <article class="card"><div class="ph" style="--img:url(img/s4.webp);--fallback:radial-gradient(120% 90% at 50% 20%,#9b4a3a,#3a1219 60%,#1a0e10)"></div>
+          <h3 data-i18n="s4t"></h3><p data-i18n="s4d"></p><span class="price" data-i18n="s4p"></span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="ba">
+    <h2 data-i18n="baTitle"></h2>
+    <p data-i18n="baText"></p>
+    <div class="compare">
+      <div class="layer ph" style="--img:url(img/before.webp);--fallback:linear-gradient(135deg,#4b3a33,#2a201c)"></div>
+      <div class="layer after ph" style="--img:url(img/after.webp);--fallback:linear-gradient(135deg,#e2c29a,#a8673f)"></div>
+      <span class="tag l" data-i18n="before"></span><span class="tag r" data-i18n="after"></span>
+      <div class="line"></div>
+      <input type="range" min="0" max="100" value="50" data-i18n-aria="baAria">
+    </div>
+  </section>
+
+  <section class="team">
+    <h2 data-i18n="teamTitle"></h2>
+    <div class="masters">
+      <article class="master"><div class="ph reveal" style="--img:url(img/m1.webp)"></div><h3>Alina Wróbel</h3><p data-i18n="m1"></p></article>
+      <article class="master"><div class="ph reveal" style="--img:url(img/m2.webp);--fallback:radial-gradient(120% 90% at 60% 30%,#c08a5b,#4a1520 60%,#1a0e10)"></div><h3>Daria Kim</h3><p data-i18n="m2"></p></article>
+      <article class="master"><div class="ph reveal" style="--img:url(img/m3.webp);--fallback:radial-gradient(120% 90% at 30% 70%,#d9b8a4,#6e1423 60%,#1a0e10)"></div><h3>Marta Lańska</h3><p data-i18n="m3"></p></article>
+    </div>
+  </section>
+
+  <section class="cta" id="book">
+    <h2 class="cta-title" data-i18n="ctaTitle"></h2>
+    <p data-i18n="ctaText"></p>
+    <a class="btn" href="your-studio.html" data-i18n="ctaBtn"></a>
+  </section>
+</main>
+
+<footer>
+  <span>© Grań, 2026</span>
+  <span data-i18n="hours"></span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+const T = {
+  pl: {
+    title: "Grań — studio fryzjerskie i kosmetologiczne",
+    desc: "Strzyżenie, koloryzacja i kosmetologia w Warszawie.",
+    nav: "Umów wizytę",
+    heroSub: "Studio fryzjerskie i kosmetologiczne w Warszawie. Pracujemy z formą, kolorem i skórą.",
+    manifesto: "Nie robimy „jak wszyscy”. Strzyżenie pod kształt twarzy, kolor pod odcień skóry, pielęgnacja pod twoją cerę, a nie pod cennik.",
+    servTitle: "Co robimy",
+    servText: "Każdy zabieg zaczyna się od konsultacji. Najpierw rozmawiamy, potem sięgamy po nożyczki albo strzykawkę.",
+    s1t: "Strzyżenie i forma", s1d: "Architektoniczne cięcia, które trzymają formę bez stylizacji.", s1p: "od 180 zł",
+    s2t: "Koloryzacja", s2d: "Złożony kolor, blond bez żółtych tonów, przejście z ciemnego na jasny.", s2p: "od 350 zł",
+    s3t: "Oczyszczanie i peelingi", s3d: "Oczyszczanie manualne i łączone, peelingi chemiczne dobrane do typu skóry.", s3p: "od 250 zł",
+    s4t: "Iniekcje", s4d: "Biorewitalizacja i modelowanie konturu. Wykonuje wyłącznie lekarz.", s4p: "od 500 zł",
+    baTitle: "Różnicę widać od razu", baText: "Przesuń suwak i porównaj efekt.", before: "Przed", after: "Po", baAria: "Porównaj przed i po",
+    teamTitle: "Kto cię przyjmie",
+    m1: "Kolorystka, 9 lat doświadczenia", m2: "Specjalistka od strzyżeń", m3: "Lekarz medycyny estetycznej",
+    ctaTitle: "Twoja kolej",
+    ctaText: "Napisz do nas. Dobierzemy specjalistkę i termin, odpowiemy w ciągu 15 minut.",
+    ctaBtn: "Umów wizytę",
+    hours: "Codziennie 10:00–22:00"
+  },
+  en: {
+    title: "Grań — hair and skin studio",
+    desc: "Haircuts, colour and cosmetology in Warsaw.",
+    nav: "Book a visit",
+    heroSub: "Hair and skin studio in Warsaw. We work with shape, colour and skin.",
+    manifesto: "We don’t do “like everyone else”. A cut shaped to your face, colour matched to your skin tone, care built for your skin, not for the price list.",
+    servTitle: "What we do",
+    servText: "Every treatment starts with a consultation. We talk first, then reach for the scissors or the syringe.",
+    s1t: "Cut and shape", s1d: "Architectural cuts that hold their shape without styling.", s1p: "from 180 zł",
+    s2t: "Colour", s2d: "Complex colour, blonde without brassiness, dark-to-light transitions.", s2p: "from 350 zł",
+    s3t: "Facials and peels", s3d: "Manual and combined cleansing, chemical peels matched to your skin type.", s3p: "from 250 zł",
+    s4t: "Injectables", s4d: "Skin boosters and contouring. Performed by a doctor only.", s4p: "from 500 zł",
+    baTitle: "See the difference", baText: "Drag the slider to compare.", before: "Before", after: "After", baAria: "Compare before and after",
+    teamTitle: "Who you’ll meet",
+    m1: "Colourist, 9 years of experience", m2: "Haircut specialist", m3: "Aesthetic medicine doctor",
+    ctaTitle: "Your turn",
+    ctaText: "Message us. We’ll match you with a specialist and a time, and reply within 15 minutes.",
+    ctaBtn: "Book a visit",
+    hours: "Daily 10:00–22:00"
+  },
+  ru: {
+    title: "Grań — студия волос и косметологии",
+    desc: "Стрижки, окрашивание и косметология в Варшаве.",
+    nav: "Записаться",
+    heroSub: "Студия волос и косметологии в Варшаве. Работаем с формой, цветом и кожей.",
+    manifesto: "Мы не делаем «как у всех». Стрижка под форму твоего лица, цвет под тон кожи, уход под твою кожу, а не под прайс.",
+    servTitle: "Что мы делаем",
+    servText: "Каждая процедура начинается с консультации. Сначала разбираемся, потом берём ножницы или шприц.",
+    s1t: "Стрижка и форма", s1d: "Архитектурные стрижки, которые держат форму без укладки.", s1p: "от 180 zł",
+    s2t: "Окрашивание", s2d: "Сложный цвет, блонд без желтизны, переход с тёмного на светлый.", s2p: "от 350 zł",
+    s3t: "Чистка и пилинги", s3d: "Ручная и комбинированная чистка, химические пилинги по типу кожи.", s3p: "от 250 zł",
+    s4t: "Инъекции", s4d: "Биоревитализация и контурная пластика. Делает только врач.", s4p: "от 500 zł",
+    baTitle: "Разница видна сразу", baText: "Потяни ползунок и сравни результат.", before: "До", after: "После", baAria: "Сравнить до и после",
+    teamTitle: "Кто тебя встретит",
+    m1: "Колорист, 9 лет опыта", m2: "Мастер по стрижкам", m3: "Врач-косметолог",
+    ctaTitle: "Твоя очередь",
+    ctaText: "Напиши нам. Подберём мастера и время, ответим в течение 15 минут.",
+    ctaBtn: "Записаться",
+    hours: "Ежедневно 10:00–22:00"
+  }
+};
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motion = window.gsap && window.ScrollTrigger && !reduce;
+let manifestoTween = null;
+
+function buildManifesto(text) {
+  const m = document.getElementById('manifesto');
+  m.innerHTML = text.split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
+  if (!motion) return;
+  if (manifestoTween) { manifestoTween.scrollTrigger.kill(); manifestoTween.kill(); }
+  manifestoTween = gsap.fromTo('#manifesto .w', { opacity: 0.12 }, {
+    opacity: 1, stagger: 0.1, ease: 'none',
+    scrollTrigger: { trigger: '.manifesto', start: 'top 75%', end: 'bottom 55%', scrub: true }
+  });
+}
+
+function setLang(lang) {
+  const t = T[lang] || T.pl;
+  document.documentElement.lang = lang;
+  document.title = t.title;
+  document.querySelector('meta[name="description"]').content = t.desc;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t[el.dataset.i18nAria]));
+  document.querySelectorAll('.langs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  buildManifesto(t.manifesto);
+  try { localStorage.setItem('lang', lang); } catch (e) {}
+  if (motion) ScrollTrigger.refresh();
+}
+
+function startLang() {
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  if (saved && T[saved]) return saved;
+  const nav = (navigator.language || '').slice(0, 2);
+  return T[nav] ? nav : 'en';
+}
+
+document.querySelectorAll('.langs button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+const compare = document.querySelector('.compare');
+compare.querySelector('input').addEventListener('input', e => compare.style.setProperty('--pos', e.target.value + '%'));
+
+if (motion) {
+  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.add('motion');
+
+  if (window.Lenis) {
+    const lenis = new Lenis({ lerp: 0.1 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) { e.preventDefault(); lenis.scrollTo(id); }
+    }));
+  }
+
+  gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=110%', scrub: true, pin: true } })
+    .to('.hero-media', { clipPath: 'inset(16% 24% 22% 24% round 4px)', ease: 'none' }, 0)
+    .to('.hero-title', { scale: 0.32, ease: 'none' }, 0)
+    .to('.hero-sub', { opacity: 0, y: -30, ease: 'none' }, 0);
+
+  const track = document.querySelector('.track');
+  const dist = () => track.scrollWidth - window.innerWidth;
+  gsap.to(track, {
+    x: () => -dist(), ease: 'none',
+    scrollTrigger: { trigger: '.services', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true }
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    gsap.fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, {
+      clipPath: 'inset(0% 0% 0% 0%)', ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top 90%', end: 'top 45%', scrub: true }
+    });
+  });
+
+  gsap.fromTo('.cta-title', { scale: 0.55, opacity: 0.3 }, {
+    scale: 1, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'center center', scrub: true }
+  });
+}
+
+setLang(startLang());
+</script>
+</body>
+</html>
