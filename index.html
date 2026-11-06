@@ -309,7 +309,9 @@ if (motion) {
 
   // Scroll-driven horizontal cards only with a mouse on wide screens.
   // Phones and tablets get a native finger swipe with snapping instead.
-  gsap.matchMedia().add('(min-width: 761px) and (hover: hover) and (pointer: fine)', () => {
+  // Some Android browsers wrongly report hover/fine pointer, so also check for a touchscreen.
+  const isTouch = navigator.maxTouchPoints > 0 || 'ontouchstart' in window || matchMedia('(any-pointer: coarse)').matches;
+  if (!isTouch) gsap.matchMedia().add('(min-width: 761px) and (hover: hover) and (pointer: fine)', () => {
     document.documentElement.classList.add('h-pin');
     const track = document.querySelector('.track');
     const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
